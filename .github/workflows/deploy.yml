@@ -1,0 +1,44 @@
+name: Deploy Static Site to EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Remove old site files from EC2
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_KEY }}
+          script: |
+            sudo rm -rf ${{ secrets.VPS_PATH }}/*
+            sudo mkdir -p ${{ secrets.VPS_PATH }}
+            sudo chown -R ubuntu:ubuntu ${{ secrets.VPS_PATH }}
+
+      - name: Upload new site files
+        uses: appleboy/scp-action@v0.1.6
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_KEY }}
+          source: "./*"
+          target: ${{ secrets.VPS_PATH }}
+
+      - name: Reload NGINX
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_KEY }}
+          script: |
+            sudo systemctl reload nginx
+
