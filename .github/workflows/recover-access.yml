@@ -1,0 +1,20 @@
+name: Recover SSH Access
+on:
+  workflow_dispatch:
+
+jobs:
+  add-access:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Add new SSH key to EC2
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_KEY }}
+          script: |
+            echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCrO7VIsIrTZNcDZkILbpEWG38V3hpfG8pSSGJPrS3JVNp5ffbk/5dt+TXl+OEkHv2dlDuWywBMtP1/wUOMj6L6MP5rj/t6O47SEgUQeUBxsl9egKTvxxNDf3Stmd2A18vX460Y8eRrxvIl8gH32e9bzryh2P8HKVI8U6Myt6xl8R4Oql1epOSnVnGIEA7tNtjGiXB1xdDzK+baml7lOnzyBxOLb+rZqP+1GRTfk/Sm9bjWU5IS1mirFB04I/bBkX8Hg1OHusacbtNBndwZrCpwxuFhBoeMEZeq1lEHx3Sl43L8iLRSRttoTrKc/4X0pLaq3kxe4WTiaGboFpqk16vPnylafxbeYRWi5gGBRf6tRr+hOiOnPHMglpoXOXMh5ygLERoeKWYNbnIw/CQqV1eZfgQysE0necG/eiYuoWay5oXbjGlUprSVturtdMCVE8AamlIhnlWrIVxpf3H2mbR7+/GmMZdwIedsoztIq4fONpd/QXjQ7FBiRwK/Ax9IDFnQl5FElrc6BJjmlIEa8BWjpVxaUmwsgDLq1XEdKw3wf2+CHOOtYIvASDsAgKyaiSgPcrmSSU71Cu+AU7G5lqkGtIxnkJZVhF92tOYd7EJSGnT2SuIb4wVKC06oJbauvH4FpeIxrEd5drLdnq2KiUc5e5x/weZH37Jm6qN8PzS+Iw== robin@Robins-MacBook-Air.local" >> ~/.ssh/authorized_keys
+            chmod 600 ~/.ssh/authorized_keys
+            echo "New SSH key added successfully."
+
