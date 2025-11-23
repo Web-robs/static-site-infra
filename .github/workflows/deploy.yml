@@ -24,14 +24,16 @@ jobs:
             sudo mkdir -p /home/ubuntu/site
             sudo chown -R ubuntu:ubuntu /home/ubuntu/site
 
-      - name: Upload NEW site files only
+      - name: Upload new site files
         uses: appleboy/scp-action@v0.1.6
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_KEY }}
-          source: "site/*"
+          source: "site/"
           target: "/home/ubuntu/site"
+          strip_components: 1
+          
 
       - name: Reload NGINX
         uses: appleboy/ssh-action@v0.1.7
