@@ -45,7 +45,7 @@ const Contact = () => {
               rel="noreferrer"
               className="text-secondary hover:text-white transition-colors"
             >
-              linkedin.com/in/your-profile
+              linkedin.com/in/robin-yaghi
             </a>
           </div>
         </div>
