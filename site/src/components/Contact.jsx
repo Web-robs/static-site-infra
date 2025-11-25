@@ -1,4 +1,84 @@
-import React, { useRef, useState } from "react";
+// src/components/Contact.jsx
+import { motion } from "framer-motion";
+import { styles } from "../styles";
+import { EarthCanvas } from "./canvas";
+import { SectionWrapper } from "../hoc";
+import { slideIn } from "../utils/motion";
+
+const Contact = () => {
+  return (
+    <div className="xl:mt-12 flex xl:flex-row flex-col-reverse gap-10 overflow-hidden">
+      {/* LEFT SIDE – TEXT / CONTACT INFO */}
+      <motion.div
+        variants={slideIn("left", "tween", 0.2, 1)}
+        className="flex-[0.75] bg-black-100 p-8 rounded-2xl"
+      >
+        <p className={styles.sectionSubText}>Get in touch</p>
+        <h3 className={styles.sectionHeadText}>Contact.</h3>
+
+        <div className="mt-8 flex flex-col gap-4 text-white">
+          <div>
+            <h4 className="font-semibold text-[18px]">Phone</h4>
+            <a
+              href="tel:+96176163826"
+              className="text-secondary hover:text-white transition-colors"
+            >
+              +961 76163826
+            </a>
+          </div>
+
+          <div>
+            <h4 className="font-semibold text-[18px]">Email</h4>
+            <a
+              href="mailto:robenyaghi@gmail.com"
+              className="text-secondary hover:text-white break-all transition-colors"
+            >
+              robenyaghi@gmail.com
+            </a>
+          </div>
+
+          <div>
+            <h4 className="font-semibold text-[18px]">LinkedIn</h4>
+            <a
+              href="https://www.linkedin.com/in/robin-yaghi"
+              target="_blank"
+              rel="noreferrer"
+              className="text-secondary hover:text-white transition-colors"
+            >
+              linkedin.com/in/your-profile
+            </a>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* RIGHT SIDE – EARTH / 3D CANVAS */}
+      <motion.div
+        variants={slideIn("right", "tween", 0.2, 1)}
+        className="xl:flex-1 xl:h-auto md:h-[550px] h-[350px]"
+      >
+        <EarthCanvas />
+      </motion.div>
+    </div>
+  );
+};
+
+export default SectionWrapper(Contact, "contact");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*import React, { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import emailjs from "@emailjs/browser";
 
@@ -133,4 +213,4 @@ const Contact = () => {
   );
 };
 
-export default SectionWrapper(Contact, "contact");
+export default SectionWrapper(Contact, "contact");*/

@@ -1,9 +1,26 @@
 import { motion } from "framer-motion";
-
+import { useEffect, useState } from "react";
 import { styles } from "../styles";
 import { ComputersCanvas } from "./canvas";
 
+
 const Hero = () => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 768px)");
+
+    // Set initial value
+    setIsMobile(mediaQuery.matches);
+
+    const handleChange = (event) => {
+      setIsMobile(event.matches);
+    };
+
+    mediaQuery.addEventListener("change", handleChange);
+    return () => mediaQuery.removeEventListener("change", handleChange);
+  }, []);
+
   return (
     <section className={`relative w-full h-screen mx-auto`}>
       <div
@@ -19,13 +36,13 @@ const Hero = () => {
             Robin <span className='text-[#915EFF]'>Yaghi</span>
           </h1>
           <p className={`${styles.heroSubText} mt-2 text-white-100`}>
-            I develop DevOps solutions,  <br className='sm:block hidden' />
-            and like solving problems
+          From code to cloud , <br className='sm:block hidden' />
+          I make everything deploy smoothly.
           </p>
         </div>
       </div>
 
-      <ComputersCanvas />
+      {!isMobile && <ComputersCanvas />}
 
       <div className='absolute xs:bottom-10 bottom-32 w-full flex justify-center items-center'>
         <a href='#about'>

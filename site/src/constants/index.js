@@ -119,6 +119,7 @@ const experiences = [
   {
     title: "Static Site Infrastructure",
     company_name: "",
+    icon: shopify,
     iconBg: "#E6DEDD",
     date: "September 2025 - October 2025",
     points: [
@@ -156,42 +157,17 @@ const experiences = [
 
     ],
   },
-  {
+  /*{
     title: "",
     company_name: "",
-    iconBg: "#E6DEDD",
     date: "",
     points: [
       
     ],
-  },
+  },*/
 ];
 
 const testimonials = [
-  {
-    testimonial:
-      "",
-    name: "",
-    designation: "",
-    company: "",
-    image: "https://randomuser.me/api/portraits/women/4.jpg",
-  },
-  {
-    testimonial:
-      "",
-    name: "",
-    designation: "",
-    company: "",
-    image: "https://randomuser.me/api/portraits/men/5.jpg",
-  },
-  {
-    testimonial:
-      "",
-    name: "",
-    designation: "",
-    company: "",
-    image: "https://randomuser.me/api/portraits/women/6.jpg",
-  },
 ];
 
 const projects = [
