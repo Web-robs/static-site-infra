@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Tilt from "react-tilt";
 import { motion } from "framer-motion";
 
@@ -15,6 +15,8 @@ const ProjectCarouselCard = ({
   image,
   source_code_link,
 }) => {
+  const [imageLoaded, setImageLoaded] = useState(false);
+
   return (
     <motion.div variants={fadeIn("up", "spring", 0.15, 0.75)} className="w-full">
       <Tilt
@@ -34,7 +36,12 @@ const ProjectCarouselCard = ({
                 className='w-full h-full object-cover'
                 loading="lazy"
                 decoding="async"
+                onLoad={() => setImageLoaded(true)}
               />
+
+              {!imageLoaded && (
+                <div className="absolute inset-0 bg-white/5 animate-pulse" />
+              )}
 
               <button
                 type="button"
@@ -90,11 +97,38 @@ const ProjectCarouselCard = ({
 };
 
 const Works = () => {
-  const items = useMemo(() => projects ?? [], []);
+  const items = projects ?? [];
   const [activeIndex, setActiveIndex] = useState(0);
 
   const total = items.length;
   const activeProject = total > 0 ? items[activeIndex] : null;
+
+  useEffect(() => {
+    if (total === 0) return;
+    if (activeIndex >= total) setActiveIndex(0);
+  }, [activeIndex, total]);
+
+  const prefetchImages = useCallback(
+    (index) => {
+      if (total <= 1) return;
+      const toPrefetch = [
+        items[(index + 1) % total],
+        items[(index - 1 + total) % total],
+      ].filter(Boolean);
+      for (const project of toPrefetch) {
+        if (!project?.image) continue;
+        const img = new Image();
+        img.decoding = "async";
+        img.loading = "eager";
+        img.src = project.image;
+      }
+    },
+    [items, total]
+  );
+
+  useEffect(() => {
+    prefetchImages(activeIndex);
+  }, [activeIndex, prefetchImages]);
 
   const goPrev = useCallback(() => {
     if (total <= 1) return;
@@ -167,7 +201,7 @@ const Works = () => {
 
       <div className="mt-6 w-full">
         {activeProject && (
-          <ProjectCarouselCard key={activeProject.name} {...activeProject} />
+          <ProjectCarouselCard key={`${activeIndex}-${activeProject.name}`} {...activeProject} />
         )}
       </div>
     </>

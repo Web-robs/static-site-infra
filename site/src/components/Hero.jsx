@@ -1,11 +1,12 @@
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
-import { ComputersCanvas } from "./canvas";
+import React, { Suspense, useEffect, useState, lazy } from "react";
 
+const ComputersCanvas = lazy(() => import("./canvas/Computers"));
 
 const Hero = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [enable3dOnMobile, setEnable3dOnMobile] = useState(false);
+  const [enable3d, setEnable3d] = useState(false);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(max-width: 768px)");
@@ -23,7 +24,12 @@ const Hero = () => {
     return () => mediaQuery.removeEventListener("change", handleChange);
   }, []);
 
-  const show3d = !isMobile || enable3dOnMobile;
+  useEffect(() => {
+    const timeout = window.setTimeout(() => setEnable3d(true), 900);
+    return () => window.clearTimeout(timeout);
+  }, []);
+
+  const show3d = enable3d && (!isMobile || enable3dOnMobile);
 
   return (
     <section className='relative w-full min-h-screen overflow-hidden text-white'>
@@ -59,19 +65,34 @@ const Hero = () => {
           <div className='col-span-12 md:col-span-6'>
             <div className='relative h-[380px] sm:h-[480px] md:h-[580px] rounded-3xl border border-white/10 bg-white/5 backdrop-blur-md overflow-hidden'>
               {show3d ? (
-                <ComputersCanvas quality={isMobile ? "low" : "high"} />
+                <Suspense
+                  fallback={
+                    <div className="w-full h-full flex items-center justify-center">
+                      <div className="text-white/70 text-sm">Loading 3D…</div>
+                    </div>
+                  }
+                >
+                  <ComputersCanvas quality={isMobile ? "low" : "high"} />
+                </Suspense>
               ) : (
                 <div className="w-full h-full flex flex-col items-center justify-center gap-4 px-6 text-center">
                   <div className="text-white/70 text-sm">
-                    Tap to load the 3D preview (may be slow on mobile).
+                    {isMobile
+                      ? "Tap to load the 3D preview (may be slow on mobile)."
+                      : "3D preview will load shortly…"}
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => setEnable3dOnMobile(true)}
-                    className="inline-flex items-center justify-center rounded-full bg-[#915EFF] px-5 py-2 text-[13px] font-semibold text-white shadow-lg shadow-[#915EFF]/20 hover:bg-[#7d4df0] transition-colors"
-                  >
-                    Load 3D
-                  </button>
+                  {isMobile && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setEnable3d(true);
+                        setEnable3dOnMobile(true);
+                      }}
+                      className="inline-flex items-center justify-center rounded-full bg-[#915EFF] px-5 py-2 text-[13px] font-semibold text-white shadow-lg shadow-[#915EFF]/20 hover:bg-[#7d4df0] transition-colors"
+                    >
+                      Load 3D
+                    </button>
+                  )}
                 </div>
               )}
               <div className='pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#1a2a31] to-transparent' />
