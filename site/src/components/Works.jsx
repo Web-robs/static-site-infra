@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import Tilt from "react-tilt";
 import { motion } from "framer-motion";
 
@@ -8,8 +8,7 @@ import { SectionWrapper } from "../hoc";
 import { projects } from "../constants";
 import { fadeIn, textVariant } from "../utils/motion";
 
-const ProjectCard = ({
-  index,
+const ProjectCarouselCard = ({
   name,
   description,
   tags,
@@ -17,50 +16,73 @@ const ProjectCard = ({
   source_code_link,
 }) => {
   return (
-    <motion.div variants={fadeIn("up", "spring", index * 0.5, 0.75)}>
+    <motion.div variants={fadeIn("up", "spring", 0.15, 0.75)} className="w-full">
       <Tilt
         options={{
-          max: 45,
+          max: 10,
           scale: 1,
-          speed: 450,
+          speed: 400,
         }}
-        className='bg-white/5 border border-white/10 backdrop-blur-md p-5 rounded-2xl sm:w-[360px] w-full'
+        className='bg-white/5 border border-white/10 backdrop-blur-md p-6 rounded-3xl w-full'
       >
-        <div className='relative w-full h-[230px]'>
-          <img
-            src={image}
-            alt='project_image'
-            className='w-full h-full object-cover rounded-2xl'
-          />
-
-          <div className='absolute inset-0 flex justify-end m-3 card-img_hover'>
-            <div
-              onClick={() => window.open(source_code_link, "_blank")}
-              className='bg-[#915EFF] hover:bg-[#7d4df0] w-10 h-10 rounded-full flex justify-center items-center cursor-pointer shadow-md'
-            >
+        <div className="grid grid-cols-12 gap-6 items-stretch">
+          <div className="col-span-12 lg:col-span-7">
+            <div className='relative w-full h-[220px] sm:h-[320px] lg:h-full min-h-[220px] overflow-hidden rounded-2xl border border-white/10'>
               <img
-                src={github}
-                alt='source code'
-                className='w-1/2 h-1/2 object-contain'
+                src={image}
+                alt={name}
+                className='w-full h-full object-cover'
+                loading="lazy"
+                decoding="async"
               />
+
+              <button
+                type="button"
+                onClick={() => window.open(source_code_link, "_blank")}
+                className='absolute top-4 right-4 bg-[#915EFF] hover:bg-[#7d4df0] w-11 h-11 rounded-full flex justify-center items-center cursor-pointer shadow-md'
+                aria-label={`Open ${name} source code`}
+              >
+                <img
+                  src={github}
+                  alt=''
+                  className='w-1/2 h-1/2 object-contain'
+                />
+              </button>
             </div>
           </div>
-        </div>
 
-        <div className='mt-5'>
-          <h3 className='text-white font-bold text-[24px]'>{name}</h3>
-          <p className='mt-2 text-white/70 text-[14px]'>{description}</p>
-        </div>
+          <div className="col-span-12 lg:col-span-5 flex flex-col">
+            <div className="flex-1">
+              <h3 className='text-white font-bold text-[28px] leading-tight'>
+                {name}
+              </h3>
+              <p className='mt-3 text-white/70 text-[15px] leading-relaxed'>
+                {description}
+              </p>
 
-        <div className='mt-4 flex flex-wrap gap-2'>
-          {tags.map((tag) => (
-            <p
-              key={`${name}-${tag.name}`}
-              className={`text-[14px] ${tag.color}`}
-            >
-              #{tag.name}
-            </p>
-          ))}
+              <div className='mt-5 flex flex-wrap gap-2'>
+                {tags.map((tag) => (
+                  <p
+                    key={`${name}-${tag.name}`}
+                    className={`text-[14px] ${tag.color}`}
+                  >
+                    #{tag.name}
+                  </p>
+                ))}
+              </div>
+            </div>
+
+            <div className="mt-6 flex flex-wrap items-center gap-3">
+              <a
+                href={source_code_link}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center justify-center rounded-full bg-white/10 border border-white/10 px-5 py-2 text-[13px] font-semibold text-white hover:bg-white/15 transition-colors"
+              >
+                View repository
+              </a>
+            </div>
+          </div>
         </div>
       </Tilt>
     </motion.div>
@@ -68,6 +90,31 @@ const ProjectCard = ({
 };
 
 const Works = () => {
+  const items = useMemo(() => projects ?? [], []);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const total = items.length;
+  const activeProject = total > 0 ? items[activeIndex] : null;
+
+  const goPrev = useCallback(() => {
+    if (total <= 1) return;
+    setActiveIndex((i) => (i - 1 + total) % total);
+  }, [total]);
+
+  const goNext = useCallback(() => {
+    if (total <= 1) return;
+    setActiveIndex((i) => (i + 1) % total);
+  }, [total]);
+
+  useEffect(() => {
+    const onKeyDown = (event) => {
+      if (event.key === "ArrowLeft") goPrev();
+      if (event.key === "ArrowRight") goNext();
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [goNext, goPrev]);
+
   return (
     <>
       <motion.div variants={textVariant()}>
@@ -84,10 +131,44 @@ const Works = () => {
         </motion.p>
       </div>
 
-      <div className='mt-20 flex flex-wrap gap-7'>
-        {projects.map((project, index) => (
-          <ProjectCard key={`project-${index}`} index={index} {...project} />
-        ))}
+      <div className="mt-10 flex items-center justify-between gap-4">
+        <div className="text-white/70 text-sm">
+          {total > 0 ? (
+            <span>
+              <span className="text-white font-semibold">{activeIndex + 1}</span>{" "}
+              / {total}
+            </span>
+          ) : (
+            <span>No projects yet.</span>
+          )}
+        </div>
+
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={goPrev}
+            disabled={total <= 1}
+            className="rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm text-white/90 hover:bg-white/10 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            aria-label="Previous project"
+          >
+            Previous
+          </button>
+          <button
+            type="button"
+            onClick={goNext}
+            disabled={total <= 1}
+            className="rounded-full bg-[#915EFF] px-4 py-2 text-sm font-semibold text-white hover:bg-[#7d4df0] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            aria-label="Next project"
+          >
+            Next
+          </button>
+        </div>
+      </div>
+
+      <div className="mt-6 w-full">
+        {activeProject && (
+          <ProjectCarouselCard key={activeProject.name} {...activeProject} />
+        )}
       </div>
     </>
   );
