@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from "react";
-import Tilt from "react-tilt";
 import { AnimatePresence, motion } from "framer-motion";
 
 import { styles } from "../styles";
@@ -19,14 +18,7 @@ const ProjectCarouselCard = ({
 
   return (
     <div className="w-full">
-      <Tilt
-        options={{
-          max: 10,
-          scale: 1,
-          speed: 400,
-        }}
-        className='bg-white/5 border border-white/10 backdrop-blur-md p-6 rounded-3xl w-full'
-      >
+      <div className='bg-white/5 border border-white/10 backdrop-blur-md p-6 rounded-3xl w-full'>
         <div className="grid grid-cols-12 gap-6 items-stretch">
           <div className="col-span-12 lg:col-span-7">
             <div className='relative w-full h-[220px] sm:h-[320px] lg:h-full min-h-[220px] overflow-hidden rounded-2xl border border-white/10'>
@@ -37,6 +29,7 @@ const ProjectCarouselCard = ({
                 loading="lazy"
                 decoding="async"
                 onLoad={() => setImageLoaded(true)}
+                onError={() => setImageLoaded(true)}
               />
 
               {!imageLoaded && (
@@ -91,7 +84,7 @@ const ProjectCarouselCard = ({
             </div>
           </div>
         </div>
-      </Tilt>
+      </div>
     </div>
   );
 };

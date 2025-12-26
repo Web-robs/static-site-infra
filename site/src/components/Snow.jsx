@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 
 const DEFAULT_FLAKES = 120;
 
@@ -35,13 +36,11 @@ const Snow = ({ flakes = DEFAULT_FLAKES }) => {
 
     const resize = () => {
       const dpr = clamp(window.devicePixelRatio || 1, 1, 2);
-      const rect = canvas.getBoundingClientRect();
-      canvas.width = Math.floor(rect.width * dpr);
-      canvas.height = Math.floor(rect.height * dpr);
+      const width = window.innerWidth || 1;
+      const height = window.innerHeight || 1;
+      canvas.width = Math.floor(width * dpr);
+      canvas.height = Math.floor(height * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-      const width = rect.width;
-      const height = rect.height;
 
       const count = clamp(Number(flakes) || DEFAULT_FLAKES, 20, 400);
       const existing = flakesRef.current;
@@ -97,14 +96,14 @@ const Snow = ({ flakes = DEFAULT_FLAKES }) => {
     };
   }, [flakes]);
 
-  return (
+  return createPortal(
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 z-10 pointer-events-none"
+      className="fixed left-0 top-0 w-screen h-screen z-10 pointer-events-none"
       aria-hidden="true"
-    />
+    />,
+    document.body
   );
 };
 
 export default Snow;
-

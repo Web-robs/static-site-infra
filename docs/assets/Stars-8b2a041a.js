@@ -1,4 +1,4 @@
-import{r as e,a as m,j as R}from"./index-c897a063.js";import{_ as g,P as _,u as x,D as d,M as P,V as z,a as y,W as M,b as F,C as U}from"./react-three-fiber.esm-c77d3bd4.js";import{i as W}from"./index-43782085.esm-18054b26.js";import{m as C}from"./react-merge-refs.esm-239dbb3c.js";class G extends _{constructor(t){super(t),this.onBeforeCompile=(r,i)=>{const{isWebGL2:o}=i.capabilities;r.fragmentShader=r.fragmentShader.replace("#include <output_fragment>",`
+import{r as e,b as m,j as R}from"./index-f06ac5fa.js";import{_ as g,P as _,u as x,D as d,M as P,V as z,a as y,W as M,b as F,C as U}from"./react-three-fiber.esm-931109a3.js";import{i as W}from"./index-43782085.esm-9487bde4.js";import{m as C}from"./react-merge-refs.esm-239dbb3c.js";class G extends _{constructor(t){super(t),this.onBeforeCompile=(r,i)=>{const{isWebGL2:o}=i.capabilities;r.fragmentShader=r.fragmentShader.replace("#include <output_fragment>",`
         ${o?"#include <output_fragment>":`#extension GL_OES_standard_derivatives : enable
 #include <output_fragment>`}
       vec2 cxy = 2.0 * gl_PointCoord - 1.0;
