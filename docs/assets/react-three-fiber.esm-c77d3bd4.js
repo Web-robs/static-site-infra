@@ -1,4 +1,4 @@
-import{r as Re,d as Y_}from"./index-ad781a11.js";/**
+import{r as Re,h as Y_}from"./index-c897a063.js";/**
  * @license
  * Copyright 2010-2023 Three.js Authors
  * SPDX-License-Identifier: MIT

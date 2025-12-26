@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import Tilt from "react-tilt";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 
 import { styles } from "../styles";
 import { github } from "../assets";
@@ -18,7 +18,7 @@ const ProjectCarouselCard = ({
   const [imageLoaded, setImageLoaded] = useState(false);
 
   return (
-    <motion.div variants={fadeIn("up", "spring", 0.15, 0.75)} className="w-full">
+    <div className="w-full">
       <Tilt
         options={{
           max: 10,
@@ -92,7 +92,7 @@ const ProjectCarouselCard = ({
           </div>
         </div>
       </Tilt>
-    </motion.div>
+    </div>
   );
 };
 
@@ -200,9 +200,19 @@ const Works = () => {
       </div>
 
       <div className="mt-6 w-full">
-        {activeProject && (
-          <ProjectCarouselCard key={`${activeIndex}-${activeProject.name}`} {...activeProject} />
-        )}
+        <AnimatePresence mode="wait" initial={false}>
+          {activeProject && (
+            <motion.div
+              key={`${activeIndex}-${activeProject.name}`}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -16 }}
+              transition={{ duration: 0.22 }}
+            >
+              <ProjectCarouselCard {...activeProject} />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </>
   );
