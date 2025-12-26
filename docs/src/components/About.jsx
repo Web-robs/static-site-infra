@@ -19,7 +19,7 @@ const ServiceCard = ({ index, title, icon }) => (
           scale: 1,
           speed: 450,
         }}
-        className='bg-tertiary rounded-[20px] py-5 px-12 min-h-[280px] flex justify-evenly items-center flex-col'
+        className='bg-white/5 border border-white/10 rounded-[20px] py-5 px-12 min-h-[280px] flex justify-evenly items-center flex-col backdrop-blur-md'
       >
         <img
           src={icon}
@@ -45,7 +45,7 @@ const About = () => {
 
       <motion.p
         variants={fadeIn("", "", 0.1, 1)}
-        className='mt-4 text-secondary text-[17px] max-w-3xl leading-[30px]'
+        className='mt-4 text-white/70 text-[17px] max-w-3xl leading-[30px]'
       >
         I'm a software engineer with hands-on experience in DevOps, cloud infrastructure, and modern deployment workflows. I work with AWS, Docker, Kubernetes, CI/CD pipelines, and containerized environments to build scalable and reliable systems. I’m a fast learner and enjoy turning complex technical challenges into clean, efficient, and production-ready solutions. Let's build something great together.
       </motion.p>

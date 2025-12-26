@@ -19,7 +19,7 @@ jobs:
           node-version: 18
 
       - name: Install deps and build Vite app
-        working-directory: ./site
+        working-directory: ./docs
         run: |
           npm install --legacy-peer-deps
           npm run build
@@ -35,13 +35,13 @@ jobs:
             sudo mkdir -p /home/ubuntu/site
             sudo chown -R ubuntu:ubuntu /home/ubuntu/site
 
-      - name: Upload built site (docs) to EC2
+      - name: Upload built site (dist) to EC2
         uses: appleboy/scp-action@v0.1.6
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_KEY }}
-          source: "docs/**"
+          source: "docs/dist/*"
           target: "/home/ubuntu/site"
 
       - name: Reload NGINX

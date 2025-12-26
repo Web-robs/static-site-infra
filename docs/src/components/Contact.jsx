@@ -11,7 +11,7 @@ const Contact = () => {
       {/* LEFT SIDE – TEXT / CONTACT INFO */}
       <motion.div
         variants={slideIn("left", "tween", 0.2, 1)}
-        className="flex-[0.75] bg-black-100 p-8 rounded-2xl"
+        className="flex-[0.75] bg-white/5 border border-white/10 backdrop-blur-md p-8 rounded-2xl"
       >
         <p className={styles.sectionSubText}>Get in touch</p>
         <h3 className={styles.sectionHeadText}>Contact.</h3>
@@ -21,7 +21,7 @@ const Contact = () => {
             <h4 className="font-semibold text-[18px]">Phone</h4>
             <a
               href="tel:+96176163826"
-              className="text-secondary hover:text-white transition-colors"
+              className="text-[#915EFF] hover:text-[#7d4df0] transition-colors"
             >
               +961 76163826
             </a>
@@ -31,7 +31,7 @@ const Contact = () => {
             <h4 className="font-semibold text-[18px]">Email</h4>
             <a
               href="mailto:robenyaghi@gmail.com"
-              className="text-secondary hover:text-white break-all transition-colors"
+              className="text-[#915EFF] hover:text-[#7d4df0] break-all transition-colors"
             >
               robenyaghi@gmail.com
             </a>
@@ -43,7 +43,7 @@ const Contact = () => {
               href="https://www.linkedin.com/in/robin-yaghi"
               target="_blank"
               rel="noreferrer"
-              className="text-secondary hover:text-white transition-colors"
+              className="text-[#915EFF] hover:text-[#7d4df0] transition-colors"
             >
               linkedin.com/in/robin-yaghi
             </a>

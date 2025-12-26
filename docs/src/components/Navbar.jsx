@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-import { styles } from "../styles";
 import { navLinks } from "../constants";
 import { logo, menu, close } from "../assets";
 
@@ -21,19 +20,20 @@ const Navbar = () => {
     };
 
     window.addEventListener("scroll", handleScroll);
+    handleScroll();
 
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
     <nav
-      className={`${
-        styles.paddingX
-      } w-full flex items-center py-5 fixed top-0 z-20 ${
-        scrolled ? "bg-primary" : "bg-transparent"
+      className={`w-full flex items-center py-4 fixed top-0 z-20 transition-colors ${
+        scrolled
+          ? "bg-[#0b1115]/70 backdrop-blur border-b border-white/10"
+          : "bg-transparent"
       }`}
     >
-      <div className='w-full flex justify-between items-center max-w-7xl mx-auto'>
+      <div className='w-full flex justify-between items-center max-w-7xl mx-auto px-6 sm:px-16'>
         <Link
           to='/'
           className='flex items-center gap-2'
@@ -43,9 +43,9 @@ const Navbar = () => {
           }}
         >
           <img src={logo} alt='logo' className='w-9 h-9 object-contain' />
-          <p className='text-white text-[18px] font-bold cursor-pointer flex '>
+          <p className='text-white text-[18px] font-bold cursor-pointer flex'>
             Robin &nbsp;
-            <span className='sm:block hidden'> | DevOps Engineer</span>
+            <span className='sm:block hidden text-white/70'>| DevOps Engineer</span>
           </p>
         </Link>
 
@@ -54,8 +54,10 @@ const Navbar = () => {
             <li
               key={nav.id}
               className={`${
-                active === nav.title ? "text-white" : "text-secondary"
-              } hover:text-white text-[18px] font-medium cursor-pointer`}
+                active === nav.title
+                  ? "text-[#915EFF]"
+                  : "text-white/70"
+              } hover:text-white text-[15px] font-medium tracking-wide cursor-pointer transition-colors`}
               onClick={() => setActive(nav.title)}
             >
               <a href={`#${nav.id}`}>{nav.title}</a>
@@ -67,21 +69,23 @@ const Navbar = () => {
           <img
             src={toggle ? close : menu}
             alt='menu'
-            className='w-[28px] h-[28px] object-contain'
+            className='w-[28px] h-[28px] object-contain invert'
             onClick={() => setToggle(!toggle)}
           />
 
           <div
             className={`${
               !toggle ? "hidden" : "flex"
-            } p-6 black-gradient absolute top-20 right-0 mx-4 my-2 min-w-[140px] z-10 rounded-xl`}
+            } p-6 bg-[#0b1115]/80 border border-white/10 shadow-lg absolute top-20 right-0 mx-4 my-2 min-w-[160px] z-10 rounded-xl backdrop-blur`}
           >
             <ul className='list-none flex justify-end items-start flex-1 flex-col gap-4'>
               {navLinks.map((nav) => (
                 <li
                   key={nav.id}
                   className={`font-poppins font-medium cursor-pointer text-[16px] ${
-                    active === nav.title ? "text-white" : "text-secondary"
+                    active === nav.title
+                      ? "text-[#915EFF]"
+                      : "text-white/70"
                   }`}
                   onClick={() => {
                     setToggle(!toggle);

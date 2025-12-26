@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { styles } from "../styles";
 import { ComputersCanvas } from "./canvas";
 
 
@@ -22,44 +21,92 @@ const Hero = () => {
   }, []);
 
   return (
-    <section className={`relative w-full h-screen mx-auto`}>
-      <div
-        className={`absolute inset-0 top-[120px]  max-w-7xl mx-auto ${styles.paddingX} flex flex-row items-start gap-5`}
-      >
-        <div className='flex flex-col justify-center items-center mt-5'>
-          <div className='w-5 h-5 rounded-full bg-[#915EFF]' />
-          <div className='w-1 sm:h-80 h-40 violet-gradient' />
-        </div>
+    <section className='relative w-full min-h-screen overflow-hidden text-white'>
+      <div className='relative max-w-7xl mx-auto px-6 sm:px-16 pt-28 pb-10 min-h-screen flex flex-col'>
+        <div className='grid grid-cols-12 gap-6 items-center flex-1'>
+          <div className='col-span-12 md:col-span-3 flex flex-col gap-6'>
+            <div className='uppercase tracking-[0.32em] text-[11px] text-white/70'>
+              ART. 03
+            </div>
 
-        <div>
-          <h1 className={`${styles.heroHeadText} text-white`}>
-            Robin <span className='text-[#915EFF]'>Yaghi</span>
-          </h1>
-          <p className={`${styles.heroSubText} mt-2 text-white-100`}>
-          From code to cloud , <br className='sm:block hidden' />
-          I make everything deploy smoothly.
-          </p>
-        </div>
-      </div>
+            <div className='rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-5'>
+              <p className='text-[12px] uppercase tracking-[0.28em] text-white/60'>
+                DevOps Engineer
+              </p>
+              <h2 className='mt-3 text-[22px] font-semibold leading-tight'>
+                Robin <span className='text-[#915EFF]'>Yaghi</span>
+              </h2>
+              <p className='mt-3 text-[13px] leading-relaxed text-white/70'>
+                From code to cloud, I make everything deploy smoothly.
+              </p>
+            </div>
 
-      {!isMobile && <ComputersCanvas />}
-
-      <div className='absolute xs:bottom-10 bottom-32 w-full flex justify-center items-center'>
-        <a href='#about'>
-          <div className='w-[35px] h-[64px] rounded-3xl border-4 border-secondary flex justify-center items-start p-2'>
-            <motion.div
-              animate={{
-                y: [0, 24, 0],
-              }}
-              transition={{
-                duration: 1.5,
-                repeat: Infinity,
-                repeatType: "loop",
-              }}
-              className='w-3 h-3 rounded-full bg-secondary mb-1'
-            />
+            <div className='rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-5'>
+              <p className='text-[12px] uppercase tracking-[0.28em] text-white/60'>
+                Focus
+              </p>
+              <p className='mt-2 text-[13px] leading-relaxed text-white/70'>
+                AWS · Terraform · CI/CD · Docker · Kubernetes
+              </p>
+            </div>
           </div>
-        </a>
+
+          <div className='col-span-12 md:col-span-6'>
+            <div className='relative h-[380px] sm:h-[480px] md:h-[580px] rounded-3xl border border-white/10 bg-white/5 backdrop-blur-md overflow-hidden'>
+              {!isMobile && <ComputersCanvas />}
+              <div className='pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#1a2a31] to-transparent' />
+            </div>
+          </div>
+
+          <div className='col-span-12 md:col-span-3 flex flex-col gap-6'>
+            <div className='rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-5'>
+              <p className='text-[12px] uppercase tracking-[0.28em] text-white/60'>
+                Quote
+              </p>
+              <p className='mt-3 text-[22px] leading-snug font-semibold'>
+                Space to have
+                <br />
+                your quote.
+              </p>
+              <div className='mt-5 flex flex-wrap items-center gap-3'>
+                <a
+                  href='#contact'
+                  className='inline-flex items-center justify-center rounded-full bg-[#915EFF] px-5 py-2 text-[13px] font-semibold text-white shadow-lg shadow-[#915EFF]/20 hover:bg-[#7d4df0] transition-colors'
+                >
+                  Contact
+                </a>
+                <a
+                  href='#work'
+                  className='inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-5 py-2 text-[13px] font-semibold text-white/90 hover:bg-white/10 transition-colors'
+                >
+                  View work
+                </a>
+              </div>
+            </div>
+
+            <div className='rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-5'>
+              <p className='text-[12px] uppercase tracking-[0.28em] text-white/60'>
+                Latest
+              </p>
+              <p className='mt-2 text-[16px] font-semibold'>Static Site Infra</p>
+              <p className='mt-2 text-[13px] leading-relaxed text-white/70'>
+                Automated deployments with GitHub Actions + NGINX.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className='mt-8 flex justify-center'>
+          <a href='#about' className='group'>
+            <div className='w-[40px] h-[68px] rounded-3xl border border-white/25 bg-white/5 backdrop-blur flex justify-center items-start p-2'>
+              <motion.div
+                animate={{ y: [0, 24, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity, repeatType: "loop" }}
+                className='w-3 h-3 rounded-full bg-white/90 mb-1 group-hover:bg-[#915EFF] transition-colors'
+              />
+            </div>
+          </a>
+        </div>
       </div>
     </section>
   );
